@@ -37,11 +37,80 @@ public class SP9 {
     }
 
     public static void insertionSort(int[] arr) {
+        for (int i=1; i<arr.length; ++i) {
+            int key = arr[i];
+            int j = i-1;
+
+            while (j>=0 && arr[j] > key) {
+                arr[j+1] = arr[j];
+                j = j-1;
+            }
+            arr[j+1] = key;
+        }
     }
 
     public static void mergeSort1(int[] arr) {
+        mergeSort1(arr, 0, arr.length - 1);
     }
 
+    public static void mergeSort1(int[] arr, int p, int r) {
+        if (p < r) {
+            int mid = (p+r)/2;
+
+            // Sort first and second halves
+            mergeSort1(arr, p, mid);
+            mergeSort1(arr , mid+1, r);
+
+            // Merge the sorted halves
+            merge(arr, p, mid, r);
+        }
+    }
+
+    public static void merge(int arr[], int p, int mid, int r)
+    {
+        // Find sizes of two subarrays to be merged
+        int n1 = mid - p + 1;
+        int n2 = r - mid;
+        /* Create temp arrays */
+        int L[] = new int [n1];
+        int R[] = new int [n2];
+
+        /*Copy data to temp arrays*/
+        for (int i = 0; i < n1; ++i) {
+            L[i] = arr[p + i];
+        }
+        for (int j = 0; j < n2; ++j) {
+            R[j] = arr[mid + 1 + j];
+        }
+
+        // Initial indexes of first and second subarrays
+        int i = 0, j = 0;
+
+        // Initial index of merged subarry array
+        int k = p;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            }
+            else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+        /* Copy remaining elements of L and R array if any */
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        }
+    }
 
     /** Timer class for roughly calculating running time of programs
      *  @author rbk
