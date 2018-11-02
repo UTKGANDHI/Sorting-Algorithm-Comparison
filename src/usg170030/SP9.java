@@ -3,6 +3,7 @@
  */
 
 package usg170030;
+import java.util.Arrays;
 import java.util.Random;
 
 public class SP9 {
@@ -17,18 +18,32 @@ public class SP9 {
             arr[i] = i;
         }
         Timer timer = new Timer();
+
+        choice = 3;
+
         switch(choice) {
             case 1:
                 Shuffle.shuffle(arr);
                 numTrials = 1;
                 insertionSort(arr);
+                System.out.println(Arrays.toString(arr));
                 break;
             case 2:
                 for(int i=0; i<numTrials; i++) {
                     Shuffle.shuffle(arr);
                     mergeSort1(arr);
                 }
+                System.out.println(Arrays.toString(arr));
                 break;  // etc
+            case 3:
+                for(int i=0; i<numTrials; i++) {
+                    Shuffle.shuffle(arr);
+                    mergeSort2(arr);
+                }
+                System.out.println(Arrays.toString(arr));
+                break;  // etc
+
+
         }
         timer.end();
         timer.scale(numTrials);
@@ -108,6 +123,54 @@ public class SP9 {
         while (j < n2) {
             arr[k] = R[j];
             j++;
+            k++;
+        }
+    }
+
+
+    public static void mergeSort2(int[] A) {
+        mergeSort2(A, 0, A.length - 1);
+    }
+
+    public static void mergeSort2(int[] A, int p, int r) {
+        int threshold = 4;
+        if (r - p + 1 < threshold)
+        {
+            insertionSort(A);
+        }
+        else
+        {
+            int mid = (p+r)/2;
+
+            // Sort first and second halves
+            mergeSort1(A, p, mid);
+            mergeSort1(A , mid+1, r);
+
+            int[] B = new int[A.length];
+            // Merge the sorted halves
+            merge(A, B, p, mid, r);
+        }
+    }
+
+    public static void merge(int A[], int[] B, int p, int mid, int r)
+    {
+        System.arraycopy(A,p,B,p,r-p+1);
+        //System.out.println(Arrays.toString(B));
+
+        int i = p;
+        int j = mid + 1;
+
+        // Initial index of merged subarry array
+        int k = p;
+        while (k <= r)
+        {
+            if (j >= A.length || (i <= mid && B[i] <= B[j]))
+            {
+                A[k] = B[i++];
+            }
+            else {
+                A[k] = B[j++];
+            }
             k++;
         }
     }
