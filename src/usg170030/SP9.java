@@ -10,7 +10,7 @@ public class SP9 {
     public static Random random = new Random();
     public static int numTrials = 100;
     public static void main(String[] args) {
-        int n = 10;  int choice = 1 + random.nextInt(4);
+        int n = 10;  int choice = 2;// + random.nextInt(4);
         if(args.length > 0) { n = Integer.parseInt(args[0]); }
         if(args.length > 1) { choice = Integer.parseInt(args[1]); }
         int[] arr = new int[n];
@@ -86,44 +86,25 @@ public class SP9 {
         // Find sizes of two subarrays to be merged
         int n1 = mid - p + 1;
         int n2 = r - mid;
+
         /* Create temp arrays */
         int L[] = new int [n1];
         int R[] = new int [n2];
 
         /*Copy data to temp arrays*/
-        for (int i = 0; i < n1; ++i) {
-            L[i] = arr[p + i];
-        }
-        for (int j = 0; j < n2; ++j) {
-            R[j] = arr[mid + 1 + j];
-        }
+        System.arraycopy(arr,p,L,0  ,n1);
+        System.arraycopy(arr,mid+1,R,0,n2);
 
         // Initial indexes of first and second subarrays
         int i = 0, j = 0;
 
-        // Initial index of merged subarry array
-        int k = p;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k] = L[i];
-                i++;
+        for (int k = p; k <= r; k++) {
+            if (j >= R.length || (i < L.length && L[i] <= R[j])) {
+                arr[k] = L[i++];
             }
             else {
-                arr[k] = R[j];
-                j++;
+                arr[k] = R[j++];
             }
-            k++;
-        }
-        /* Copy remaining elements of L and R array if any */
-        while (i < n1) {
-            arr[k] = L[i];
-            i++;
-            k++;
-        }
-        while (j < n2) {
-            arr[k] = R[j];
-            j++;
-            k++;
         }
     }
 
