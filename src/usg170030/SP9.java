@@ -19,7 +19,7 @@ public class SP9 {
         }
         Timer timer = new Timer();
 
-        choice = 3;
+        choice = 4;
 
         switch(choice) {
             case 1:
@@ -42,7 +42,13 @@ public class SP9 {
                 }
                 System.out.println(Arrays.toString(arr));
                 break;  // etc
-
+            case 4:
+                for(int i=0; i<numTrials; i++) {
+                    Shuffle.shuffle(arr);
+                    mergeSort3(arr);
+                }
+                System.out.println(Arrays.toString(arr));
+                break;  // etc
 
         }
         timer.end();
@@ -51,6 +57,19 @@ public class SP9 {
         System.out.println("Choice: " + choice + "\n" + timer);
     }
 
+    public static void insertionSort(int[] arr, int p, int r)
+    {
+        for (int i=p+1; i<=r; ++i) {
+            int key = arr[i];
+            int j = i-1;
+
+            while (j>=p && arr[j] > key) {
+                arr[j+1] = arr[j];
+                j = j-1;
+            }
+            arr[j+1] = key;
+        }
+    }
     public static void insertionSort(int[] arr) {
         for (int i=1; i<arr.length; ++i) {
             int key = arr[i];
@@ -155,6 +174,52 @@ public class SP9 {
             k++;
         }
     }
+
+    public static void mergeSort3(int[] A) {
+        int[] B = new int[A.length];
+        System.arraycopy(A,0,B,0,A.length);
+        mergeSort3(A,B,0,A.length);
+    }
+
+    public static void mergeSort3(int[] A, int[] B, int left, int n) {
+        int threshold = 4;
+        if (n < threshold)
+        {
+            insertionSort(A, left, left+n-1);
+        }
+        else
+        {
+            mergeSort3(B,A,left,n/2);
+            mergeSort3(B,A,left+n/2,n-n/2);
+            merge3(A,B,left,left+n/2-1,left+n-1);
+        }
+    }
+
+    public static void merge3(int A[], int[] B, int p, int mid, int r)
+    {
+        int i = p, j = mid + 1, k = p ;
+        while (i<=mid && j<=r)
+        {
+            if (B[i]<=B[j])
+            {
+                A[k++] = B[i++];
+            }
+            else
+            {
+                A[k++] = B[j++];
+            }
+        }
+
+        while (i<=mid)
+        {
+            A[k++] = B[i++];
+        }
+        while(j<=r)
+        {
+            A[k++] = B[j++];
+        }
+    }
+
 
     /** Timer class for roughly calculating running time of programs
      *  @author rbk
