@@ -3,14 +3,18 @@
  */
 
 package usg170030;
-import java.util.Arrays;
+
 import java.util.Random;
 
 public class SP9 {
     public static Random random = new Random();
     public static int numTrials = 100;
+
+    public static int thresholdMergeSort2 = 99;
+    public static int thresholdMergeSort3 = 99;
+
     public static void main(String[] args) {
-        int n = 10;  int choice = 2;// + random.nextInt(4);
+        int n = 64000000;  int choice = 1 + random.nextInt(4);
         if(args.length > 0) { n = Integer.parseInt(args[0]); }
         if(args.length > 1) { choice = Integer.parseInt(args[1]); }
         int[] arr = new int[n];
@@ -19,35 +23,38 @@ public class SP9 {
         }
         Timer timer = new Timer();
 
-        choice = 4;
+        choice = 3;
 
         switch(choice) {
             case 1:
                 Shuffle.shuffle(arr);
                 numTrials = 1;
                 insertionSort(arr);
-                System.out.println(Arrays.toString(arr));
+                //System.out.println(Arrays.toString(arr));
                 break;
             case 2:
+                numTrials = 100;
                 for(int i=0; i<numTrials; i++) {
                     Shuffle.shuffle(arr);
                     mergeSort1(arr);
                 }
-                System.out.println(Arrays.toString(arr));
+                //System.out.println(Arrays.toString(arr));
                 break;  // etc
             case 3:
+                numTrials = 100;
                 for(int i=0; i<numTrials; i++) {
                     Shuffle.shuffle(arr);
                     mergeSort2(arr);
                 }
-                System.out.println(Arrays.toString(arr));
+                //System.out.println(Arrays.toString(arr));
                 break;  // etc
             case 4:
+                numTrials = 100;
                 for(int i=0; i<numTrials; i++) {
                     Shuffle.shuffle(arr);
                     mergeSort3(arr);
                 }
-                System.out.println(Arrays.toString(arr));
+                //System.out.println(Arrays.toString(arr));
                 break;  // etc
 
         }
@@ -59,28 +66,19 @@ public class SP9 {
 
     public static void insertionSort(int[] arr, int p, int r)
     {
-        for (int i=p+1; i<=r; ++i) {
+        for (int i = p + 1; i <= r; ++i) {
             int key = arr[i];
             int j = i-1;
 
-            while (j>=p && arr[j] > key) {
+            while (j >= p && arr[j] > key) {
                 arr[j+1] = arr[j];
-                j = j-1;
+                j--;
             }
             arr[j+1] = key;
         }
     }
     public static void insertionSort(int[] arr) {
-        for (int i=1; i<arr.length; ++i) {
-            int key = arr[i];
-            int j = i-1;
-
-            while (j>=0 && arr[j] > key) {
-                arr[j+1] = arr[j];
-                j = j-1;
-            }
-            arr[j+1] = key;
-        }
+        insertionSort(arr,0,arr.length-1);
     }
 
     public static void mergeSort1(int[] arr) {
@@ -129,19 +127,18 @@ public class SP9 {
 
 
     public static void mergeSort2(int[] A) {
+        int[] B = new int[A.length];
         mergeSort2(A, 0, A.length - 1);
     }
 
     public static void mergeSort2(int[] A, int p, int r) {
-        int threshold = 4;
-        if (r - p + 1 < threshold)
+        if (r - p + 1 < thresholdMergeSort2)
         {
-            insertionSort(A);
+            insertionSort(A, p,r-p+1);
         }
         else
         {
             int mid = (p+r)/2;
-
             // Sort first and second halves
             mergeSort1(A, p, mid);
             mergeSort1(A , mid+1, r);
@@ -152,19 +149,36 @@ public class SP9 {
         }
     }
 
+   /* public static void mergeSort2(int[] A, int[] B, int left, int n) {
+        int threshold = 4;
+        if (n < threshold)
+        {
+            insertionSort(A,left,n+left-1);
+        }
+        else
+        {
+            int mid = n/2;
+
+            // Sort first and second halves
+            mergeSort2(A, B, left, mid);
+            mergeSort2(A ,B, left+mid, n-mid);
+
+            // Merge the sorted halves
+            merge(A, B, left, left + mid - 1, left + n - 1);
+        }
+    }*/
+
     public static void merge(int A[], int[] B, int p, int mid, int r)
     {
         System.arraycopy(A,p,B,p,r-p+1);
         //System.out.println(Arrays.toString(B));
-
         int i = p;
         int j = mid + 1;
-
         // Initial index of merged subarry array
         int k = p;
         while (k <= r)
         {
-            if (j >= A.length || (i <= mid && B[i] <= B[j]))
+            if (j > r || (i <= mid && B[i] <= B[j]))
             {
                 A[k] = B[i++];
             }
@@ -182,25 +196,25 @@ public class SP9 {
     }
 
     public static void mergeSort3(int[] A, int[] B, int left, int n) {
-        int threshold = 4;
-        if (n < threshold)
+        if (n < thresholdMergeSort3)
         {
-            insertionSort(A, left, left+n-1);
+            insertionSort(A, left, left + n - 1);
         }
         else
         {
-            mergeSort3(B,A,left,n/2);
-            mergeSort3(B,A,left+n/2,n-n/2);
-            merge3(A,B,left,left+n/2-1,left+n-1);
+            int Ln = n/2;
+            mergeSort3(B, A, left, Ln);
+            mergeSort3(B, A,left + Ln,n - Ln);
+            merge3(A,B,left,left + Ln - 1,left + n - 1);
         }
     }
 
     public static void merge3(int A[], int[] B, int p, int mid, int r)
     {
         int i = p, j = mid + 1, k = p ;
-        while (i<=mid && j<=r)
+        while (i <= mid && j <= r)
         {
-            if (B[i]<=B[j])
+            if (B[i] <= B[j])
             {
                 A[k++] = B[i++];
             }
@@ -209,12 +223,11 @@ public class SP9 {
                 A[k++] = B[j++];
             }
         }
-
-        while (i<=mid)
+        while (i <= mid)
         {
             A[k++] = B[i++];
         }
-        while(j<=r)
+        while(j <= r)
         {
             A[k++] = B[j++];
         }
