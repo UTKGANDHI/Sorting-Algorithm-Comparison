@@ -1,5 +1,8 @@
 /** Sample starter code for SP9.
+ *
  *  @author
+ *  Sunny Bangale (shb170230)
+ *  Utkarsh Gandhi (usg170030)
  */
 
 package usg170030;
@@ -11,11 +14,11 @@ public class SP9 {
     public static Random random = new Random();
     public static int numTrials = 100;
 
-    public static int thresholdMergeSort2 = 99;
-    public static int thresholdMergeSort3 = 99;
+    public static int thresholdMergeSort2 = 99; // threshold for mergesort take 2
+    public static int thresholdMergeSort3 = 99; // threshold for mergesort take 3
 
     public static void main(String[] args) {
-        int n = 32000000;  int choice = 1 + random.nextInt(4);
+        int n = 32000000;  int choice = 1 ;//+ random.nextInt(4);
         if(args.length > 0) { n = Integer.parseInt(args[0]); }
         if(args.length > 1) { choice = Integer.parseInt(args[1]); }
         int[] arr = new int[n];
@@ -23,8 +26,6 @@ public class SP9 {
             arr[i] = i;
         }
         Timer timer = new Timer();
-
-        choice = 3;
 
         switch(choice) {
             case 1:
@@ -57,7 +58,6 @@ public class SP9 {
                 }
                 //System.out.println(Arrays.toString(arr));
                 break;  // etc
-
         }
         timer.end();
         timer.scale(numTrials);
@@ -65,6 +65,11 @@ public class SP9 {
         System.out.println("Choice: " + choice + "\n" + timer);
     }
 
+    /**insertionSort helper
+     * @param arr
+     * @param p
+     * @param r
+     */
     public static void insertionSort(int[] arr, int p, int r)
     {
         for (int i = p + 1; i <= r; ++i) {
@@ -78,14 +83,26 @@ public class SP9 {
             arr[j+1] = key;
         }
     }
+
+    /** insertionSort
+     * @param arr
+     */
     public static void insertionSort(int[] arr) {
         insertionSort(arr,0,arr.length-1);
     }
 
+    /** mergeSort1
+     * @param arr
+     */
     public static void mergeSort1(int[] arr) {
         mergeSort1(arr, 0, arr.length - 1);
     }
 
+    /** mergeSort1 : performs the merge sort
+     * @param arr
+     * @param p
+     * @param r
+     */
     public static void mergeSort1(int[] arr, int p, int r) {
         if (p < r) {
             int mid = (p+r)/2;
@@ -99,6 +116,12 @@ public class SP9 {
         }
     }
 
+    /** merge: merge the elements, used in mergeSort1
+     * @param arr
+     * @param p
+     * @param mid
+     * @param r
+     */
     public static void merge(int arr[], int p, int mid, int r)
     {
         // Find sizes of two subarrays to be merged
@@ -126,12 +149,20 @@ public class SP9 {
         }
     }
 
-
+    /** mergeSort2
+     * @param A
+     */
     public static void mergeSort2(int[] A) {
         int[] B = new int[A.length];
         mergeSort2(A, B, 0, A.length - 1);
     }
 
+    /** mergeSort2 - performs the merge Sort using the technique in take 2
+     * @param A
+     * @param B
+     * @param p
+     * @param r
+     */
     public static void mergeSort2(int[] A, int[] B, int p, int r) {
         if (r - p + 1 < thresholdMergeSort2)
         {
@@ -149,25 +180,13 @@ public class SP9 {
         }
     }
 
-   /* public static void mergeSort2(int[] A, int[] B, int left, int n) {
-        int threshold = 4;
-        if (n < threshold)
-        {
-            insertionSort(A,left,n+left-1);
-        }
-        else
-        {
-            int mid = n/2;
-
-            // Sort first and second halves
-            mergeSort2(A, B, left, mid);
-            mergeSort2(A ,B, left+mid, n-mid);
-
-            // Merge the sorted halves
-            merge(A, B, left, left + mid - 1, left + n - 1);
-        }
-    }*/
-
+    /** merge : merge the elements, used in mergeSort2
+     * @param A
+     * @param B
+     * @param p
+     * @param mid
+     * @param r
+     */
     public static void merge(int A[], int[] B, int p, int mid, int r)
     {
         System.arraycopy(A,p,B,p,r-p+1);
@@ -189,12 +208,22 @@ public class SP9 {
         }
     }
 
+    /**
+     * mergeSort3
+     * @param A
+     */
     public static void mergeSort3(int[] A) {
         int[] B = new int[A.length];
         System.arraycopy(A,0,B,0,A.length);
         mergeSort3(A,B,0,A.length);
     }
 
+    /** mergeSort3 - performing mergesort using the technique in take 3
+     * @param A
+     * @param B
+     * @param left
+     * @param n
+     */
     public static void mergeSort3(int[] A, int[] B, int left, int n) {
         if (n < thresholdMergeSort3)
         {
@@ -209,6 +238,13 @@ public class SP9 {
         }
     }
 
+    /** merge3 : merging the elements, used in mergeSort3
+     * @param A
+     * @param B
+     * @param p
+     * @param mid
+     * @param r
+     */
     public static void merge3(int A[], int[] B, int p, int mid, int r)
     {
         int i = p, j = mid + 1, k = p ;
@@ -279,7 +315,6 @@ public class SP9 {
 
     /** @author rbk : based on algorithm described in a book
      */
-
 
     /* Shuffle the elements of an array arr[from..to] randomly */
     public static class Shuffle {
