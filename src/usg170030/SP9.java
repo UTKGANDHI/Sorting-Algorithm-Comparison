@@ -4,6 +4,7 @@
 
 package usg170030;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class SP9 {
@@ -14,7 +15,7 @@ public class SP9 {
     public static int thresholdMergeSort3 = 99;
 
     public static void main(String[] args) {
-        int n = 64000000;  int choice = 1 + random.nextInt(4);
+        int n = 32000000;  int choice = 1 + random.nextInt(4);
         if(args.length > 0) { n = Integer.parseInt(args[0]); }
         if(args.length > 1) { choice = Integer.parseInt(args[1]); }
         int[] arr = new int[n];
@@ -109,8 +110,8 @@ public class SP9 {
         int R[] = new int [n2];
 
         /*Copy data to temp arrays*/
-        System.arraycopy(arr,p,L,0  ,n1);
-        System.arraycopy(arr,mid+1,R,0,n2);
+        System.arraycopy(arr, p, L, 0  , n1);
+        System.arraycopy(arr,mid + 1,R,0, n2);
 
         // Initial indexes of first and second subarrays
         int i = 0, j = 0;
@@ -128,22 +129,21 @@ public class SP9 {
 
     public static void mergeSort2(int[] A) {
         int[] B = new int[A.length];
-        mergeSort2(A, 0, A.length - 1);
+        mergeSort2(A, B, 0, A.length - 1);
     }
 
-    public static void mergeSort2(int[] A, int p, int r) {
+    public static void mergeSort2(int[] A, int[] B, int p, int r) {
         if (r - p + 1 < thresholdMergeSort2)
         {
-            insertionSort(A, p,r-p+1);
+            insertionSort(A, p, r);
         }
         else
         {
-            int mid = (p+r)/2;
+            int mid = (p + r) / 2;
             // Sort first and second halves
-            mergeSort1(A, p, mid);
-            mergeSort1(A , mid+1, r);
-
-            int[] B = new int[A.length];
+            mergeSort2(A, B, p, mid);
+            mergeSort2(A ,B, mid + 1, r);
+            //int[] B = new int[A.length];
             // Merge the sorted halves
             merge(A, B, p, mid, r);
         }
