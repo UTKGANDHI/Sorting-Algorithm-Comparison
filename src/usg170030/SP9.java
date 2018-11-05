@@ -18,7 +18,7 @@ public class SP9 {
     public static int thresholdMergeSort3 = 99; // threshold for mergesort take 3
 
     public static void main(String[] args) {
-        int n = 3200000;  int choice = 2 ;//+ random.nextInt(4);
+        int n = 8000000;  int choice = 1 + random.nextInt(4);
         if(args.length > 0) { n = Integer.parseInt(args[0]); }
         if(args.length > 1) { choice = Integer.parseInt(args[1]); }
         int[] arr = new int[n];
@@ -190,7 +190,7 @@ public class SP9 {
     public static void merge(int A[], int[] B, int p, int mid, int r)
     {
         System.arraycopy(A,p,B,p,r-p+1);
-        //System.out.println(Arrays.toString(B));
+
         int i = p;
         int j = mid + 1;
         // Initial index of merged subarry array
